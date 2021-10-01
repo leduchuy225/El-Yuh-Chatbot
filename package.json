@@ -5,13 +5,19 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "jest": "^27.2.4",
     "nodemon": "^2.0.13"
+  },
+  "engines": {
+    "node": "14.x",
+    "yarn": "1.x"
   }
 }
