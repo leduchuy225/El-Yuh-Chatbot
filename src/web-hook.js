@@ -1,6 +1,8 @@
-const router = require("express").Router();
+const { VERIFY_TOKEN } = require("./const");
+const { messenger } = require("./message");
+const { crawlLastestNewsFromThanhNienVn } = require("./utility");
 
-require("dotenv").config();
+const router = require("express").Router();
 
 router.post("/webhook", (req, res) => {
   const body = req.body;
@@ -8,11 +10,21 @@ router.post("/webhook", (req, res) => {
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
-    body.entry.forEach(function (entry) {
+    body.entry.forEach(async function (entry) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       const webhookEvent = entry.messaging[0];
       console.log(webhookEvent);
+
+      const senderPsid = webhookEvent.sender.id;
+
+      const data = await crawlLastestNewsFromThanhNienVn();
+
+      if (data && data.length) {
+        messenger.callSendAPI(senderPsid, {
+          text: data[0].name + "\n" + data[0].link,
+        });
+      }
     });
 
     // Returns a '200 OK' response to all requests
@@ -24,11 +36,6 @@ router.post("/webhook", (req, res) => {
 });
 
 router.get("/webhook", (req, res) => {
-  // Your verify token. Should be a random string.
-  const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-
-  console.log(VERIFY_TOKEN);
-
   // Parse the query params
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
