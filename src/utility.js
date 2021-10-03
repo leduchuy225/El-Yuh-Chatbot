@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 const { default: axios } = require("axios");
 
-exports.crawlLastestNewsFromThanhNienVn = async () => {
+exports.crawlLastestNewsFromThanhNienVn = async (number) => {
   const { data } = await axios.get(
     "https://thanhnien.vn/api/contents/get/latest",
     {
@@ -21,7 +21,7 @@ exports.crawlLastestNewsFromThanhNienVn = async () => {
       };
       articles.push(item);
     });
-    return articles;
+    return articles.slice(0, number);
   } catch {
     return [];
   }

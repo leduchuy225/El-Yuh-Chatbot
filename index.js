@@ -10,7 +10,7 @@ app.get("/", (_, res) => {
 });
 
 app.use("/", require("./src/web-hook"));
-app.use("/test", require("./src/test"));
+app.use("/test", require("./test/test"));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

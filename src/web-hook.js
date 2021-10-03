@@ -1,6 +1,5 @@
-const { VERIFY_TOKEN } = require("./const");
+const { VERIFY_TOKEN, GET_STARTED, Menu } = require("./const");
 const { messenger } = require("./message");
-const { crawlLastestNewsFromThanhNienVn } = require("./utility");
 
 const router = require("express").Router();
 
@@ -13,17 +12,23 @@ router.post("/webhook", (req, res) => {
     body.entry.forEach(async function (entry) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
+      console.log(entry);
+
       const webhookEvent = entry.messaging[0];
-      console.log(webhookEvent);
-
       const senderPsid = webhookEvent.sender.id;
-
-      const data = await crawlLastestNewsFromThanhNienVn();
-
-      if (data && data.length) {
-        messenger.callSendAPI(senderPsid, {
-          text: data[0].name + "\n" + data[0].link,
-        });
+      const payload = webhookEvent?.postback?.payload;
+      if (payload) {
+        switch (payload) {
+          case GET_STARTED:
+            // messenger.setSelectButton(senderPsid);
+            messenger.setPermistentMenu(senderPsid);
+            return;
+          case Menu.NEWS:
+            messenger.sendNews(senderPsid);
+            return;
+        }
+      } else {
+        messenger.setSelectButton(senderPsid);
       }
     });
 
