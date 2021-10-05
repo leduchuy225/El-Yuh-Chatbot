@@ -9,5 +9,9 @@ module.exports = {
 
   Menu: {
     NEWS: "NEWS",
+    HOROSCOPE: "HOROSCOPE",
+  },
+  Horoscope: {
+    GEMINI: "song-tu-3",
   },
 };

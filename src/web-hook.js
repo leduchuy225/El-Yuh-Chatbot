@@ -1,5 +1,6 @@
 const { VERIFY_TOKEN, GET_STARTED, Menu } = require("./const");
 const { messenger } = require("./message");
+const { messengerUltility } = require("./messenger-ultility");
 
 const router = require("express").Router();
 
@@ -20,11 +21,14 @@ router.post("/webhook", (req, res) => {
       if (payload) {
         switch (payload) {
           case GET_STARTED:
-            // messenger.setSelectButton(senderPsid);
             messenger.setPermistentMenu(senderPsid);
+            messenger.setSelectButton(senderPsid);
             return;
           case Menu.NEWS:
-            messenger.sendNews(senderPsid);
+            messengerUltility.sendNews(senderPsid);
+            return;
+          case Menu.HOROSCOPE:
+            messengerUltility.sendHoroscopeForToday(senderPsid);
             return;
         }
       } else {

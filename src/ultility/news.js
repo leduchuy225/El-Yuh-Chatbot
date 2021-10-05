@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 const { default: axios } = require("axios");
 const dayjs = require("dayjs");
-const { DATE_FORMAT } = require("./const");
+const { DATE_FORMAT } = require("../const");
 
 exports.crawlLastestNewsFromThanhNienVn = async (number) => {
   const { data } = await axios.get(
