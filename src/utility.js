@@ -1,5 +1,7 @@
 const cheerio = require("cheerio");
 const { default: axios } = require("axios");
+const dayjs = require("dayjs");
+const { DATE_FORMAT } = require("./const");
 
 exports.crawlLastestNewsFromThanhNienVn = async (number) => {
   const { data } = await axios.get(
@@ -16,7 +18,10 @@ exports.crawlLastestNewsFromThanhNienVn = async (number) => {
       const item = {
         id: $(article).attr("rel"),
         name: $(article).find("a").text().trim(),
-        time: $(article).find(".meta time").text().trim(),
+        time:
+          dayjs().format(DATE_FORMAT) +
+          " " +
+          $(article).find(".meta time").text().trim(),
         link: $(article).find("a").attr("href"),
       };
       articles.push(item);

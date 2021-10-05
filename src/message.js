@@ -58,7 +58,8 @@ class Messenger {
       const listNews = {
         type: "template",
         payload: {
-          template_type: "generic",
+          template_type: "list",
+          top_element_style: "compact",
           elements: data.map((item) => ({
             title: item.name,
             subtitle: item.time,
