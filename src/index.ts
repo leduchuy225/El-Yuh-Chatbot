@@ -1,6 +1,8 @@
-const dayjs = require("dayjs");
-const express = require("express");
-const { PORT } = require("./src/const");
+import dayjs from "dayjs";
+import express from "express";
+import { PORT } from "./const";
+import testRouter from "./test/test";
+import webHookRouter from "./web-hook";
 
 const app = express();
 
@@ -10,8 +12,8 @@ app.get("/", (_, res) => {
   res.send("Welcome to my app");
 });
 
-app.use("/", require("./src/web-hook"));
-app.use("/test", require("./test/test"));
+app.use("/", webHookRouter);
+app.use("/test", testRouter);
 
 app.listen(PORT, () => {
   console.log("Current time:", dayjs().format());

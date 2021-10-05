@@ -1,13 +1,13 @@
-const { Messenger } = require("./message");
-const { crawlLastestNewsFromThanhNienVn } = require("./ultility/news");
-const {
+import { Horoscope } from "../const";
+import {
   crawlHoroscopeTodayFromLichNgayTotVn,
   createDailyHoroScropeForm,
-} = require("./ultility/horoscope");
-const { Horoscope } = require("./const");
+} from "../ultility/horoscope";
+import { crawlLastestNewsFromThanhNienVn } from "../ultility/news";
+import { Messenger } from "./messenger";
 
 class MessengerUltility extends Messenger {
-  sendNews = async (senderPsid) => {
+  sendNews = async (senderPsid: string) => {
     const data = await crawlLastestNewsFromThanhNienVn(3);
     if (data && data.length) {
       const listNews = {
@@ -31,7 +31,7 @@ class MessengerUltility extends Messenger {
     }
   };
 
-  sendHoroscopeForToday = async (senderPsid) => {
+  sendHoroscopeForToday = async (senderPsid: string) => {
     const data = await crawlHoroscopeTodayFromLichNgayTotVn(Horoscope.GEMINI);
     const images = {
       type: "image",
@@ -49,4 +49,4 @@ class MessengerUltility extends Messenger {
   };
 }
 
-module.exports.messengerUltility = new MessengerUltility();
+export const messengerUltility = new MessengerUltility();

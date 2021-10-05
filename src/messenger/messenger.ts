@@ -1,9 +1,15 @@
-const { default: axios } = require("axios");
-const { PAGE_ACCESS_TOKEN, GET_STARTED, Menu } = require("./const.js");
+import axios, { AxiosRequestConfig } from "axios";
+import { GET_STARTED, Menu, PAGE_ACCESS_TOKEN } from "../const";
+import { MessageResponse } from "./messenger.type";
 
-class Messenger {
-  BASE_URL = "https://graph.facebook.com/v2.6/me";
-  TOKEN = PAGE_ACCESS_TOKEN;
+interface CallRequestInterface extends AxiosRequestConfig {
+  path: string;
+}
+
+export class Messenger {
+  private BASE_URL = "https://graph.facebook.com/v2.6/me";
+  private TOKEN = PAGE_ACCESS_TOKEN;
+
   ListFunctions = [
     {
       title: "Get Newest News",
@@ -15,32 +21,32 @@ class Messenger {
     },
   ];
 
-  call({ path, ...options }) {
+  private call = ({ path, ...options }: CallRequestInterface) => {
     return axios({
       params: { access_token: this.TOKEN },
       url: this.BASE_URL + path,
       ...options,
     }).catch((err) => console.log(err));
-  }
+  };
 
-  post(path, data) {
+  private post = (path: string, data: object) => {
     return this.call({ method: "post", path, data });
-  }
+  };
 
-  callSendAPI(senderPsid, response) {
+  callSendAPI = (senderPsid: string, response: MessageResponse) => {
     this.post("/messages", {
       recipient: { id: senderPsid },
       message: response,
     });
-  }
+  };
 
-  setGetStartedPayload() {
+  setGetStartedPayload = () => {
     this.post("/messenger_profile", {
       get_started: { payload: GET_STARTED },
     });
-  }
+  };
 
-  setSelectButton(senderPsid) {
+  setSelectButton = (senderPsid: string) => {
     const data = {
       type: "template",
       payload: {
@@ -53,9 +59,9 @@ class Messenger {
       },
     };
     this.callSendAPI(senderPsid, { attachment: data });
-  }
+  };
 
-  setPermistentMenu(senderPsid) {
+  setPermistentMenu = (senderPsid: string) => {
     const data = {
       psid: senderPsid,
       persistent_menu: [
@@ -70,10 +76,7 @@ class Messenger {
       ],
     };
     this.post("/custom_user_settings", data);
-  }
+  };
 }
 
-module.exports = {
-  Messenger,
-  messenger: new Messenger(),
-};
+export const messenger = new Messenger();

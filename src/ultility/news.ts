@@ -1,9 +1,16 @@
-const cheerio = require("cheerio");
-const { default: axios } = require("axios");
-const dayjs = require("dayjs");
-const { DATE_FORMAT } = require("../const");
+import axios from "axios";
+import { load } from "cheerio";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "../const";
 
-exports.crawlLastestNewsFromThanhNienVn = async (number) => {
+interface ArticleData {
+  id: string;
+  name: string;
+  time: string;
+  link: string;
+}
+
+export const crawlLastestNewsFromThanhNienVn = async (number: number) => {
   const { data } = await axios.get(
     "https://thanhnien.vn/api/contents/get/latest",
     {
@@ -12,8 +19,9 @@ exports.crawlLastestNewsFromThanhNienVn = async (number) => {
   );
 
   try {
-    const articles = [];
-    const $ = cheerio.load(data.data.articles);
+    const articles: ArticleData[] = [];
+    const $ = load((data as any).data.articles);
+
     $(".story--text").each((_, article) => {
       const item = {
         id: $(article).attr("rel"),
@@ -23,9 +31,10 @@ exports.crawlLastestNewsFromThanhNienVn = async (number) => {
           " " +
           $(article).find(".meta time").text().trim(),
         link: $(article).find("a").attr("href"),
-      };
+      } as ArticleData;
       articles.push(item);
     });
+
     return articles.slice(0, number);
   } catch {
     return [];

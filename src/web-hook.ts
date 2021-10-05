@@ -1,8 +1,9 @@
-const { VERIFY_TOKEN, GET_STARTED, Menu } = require("./const");
-const { messenger } = require("./message");
-const { messengerUltility } = require("./messenger-ultility");
+import { Router } from "express";
+import { GET_STARTED, Menu, VERIFY_TOKEN } from "./const";
+import { messenger } from "./messenger/messenger";
+import { messengerUltility } from "./messenger/messenger-ultility";
 
-const router = require("express").Router();
+const router = Router();
 
 router.post("/webhook", (req, res) => {
   const body = req.body;
@@ -10,7 +11,7 @@ router.post("/webhook", (req, res) => {
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
-    body.entry.forEach(async function (entry) {
+    body.entry.forEach(async function (entry: any) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       console.log(entry);
@@ -64,4 +65,4 @@ router.get("/webhook", (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,14 +1,15 @@
-const { Horoscope } = require("../src/const");
-const {
+import { Router } from "express";
+import { Horoscope } from "../const";
+import {
   crawlHoroscopeTodayFromLichNgayTotVn,
   createDailyHoroScropeForm,
-} = require("../src/ultility/horoscope");
+} from "../ultility/horoscope";
 
-const router = require("express").Router();
+const router = Router();
 
 router.get("/", async (_, res) => {
   const data = await crawlHoroscopeTodayFromLichNgayTotVn(Horoscope.GEMINI);
   res.json(createDailyHoroScropeForm(data));
 });
 
-module.exports = router;
+export default router;
