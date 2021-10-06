@@ -19,31 +19,27 @@ export const crawlHoroscopeTodayFromLichNgayTotVn = async (
 ): Promise<HoroscopeData> => {
   const url = `https://lichngaytot.com/cung-hoang-dao/${type}.html`;
   const { data } = await axios.get(url);
-  const prediction: PredictionItem[] = [];
 
   const $ = load(data);
 
-  const title = $("#content_1 > div.menu_down_sub.show > div > h3")
+  const image = $("#content_1 > div.menu_down_sub.show td img").attr("src");
+  const horoscope = $("#content_1 > div.menu_down_sub.show > .entry")
     .text()
-    .trim();
-  const image = $(
-    "#content_1 > div.menu_down_sub.show > div > div:nth-child(4) > div > table > tbody > tr:nth-child(1) > td > img"
-  ).attr("src");
-  const subTitle = $(
-    "#content_1 > div.menu_down_sub.show > div > div:nth-child(4)"
-  )
-    .text()
-    .trim();
-  $("#content_1 > div.menu_down_sub.show > .entry > div strong").each(
-    (_, item) => {
-      prediction.push({
-        category: $(item).text(),
-        content: (item.next as any).data.slice(2),
-      });
-    }
-  );
+    .split("\n")
+    .map((text) => text.trim())
+    .filter((text) => !!text);
 
-  return { title, subTitle, image, prediction };
+  const [title, subTitle, ...predictions] = horoscope;
+
+  return {
+    title,
+    subTitle,
+    image,
+    prediction: predictions.map((item) => {
+      const [category, content] = item.split(":", 2);
+      return { category, content };
+    }),
+  };
 };
 
 export const createDailyHoroScropeForm = (data: HoroscopeData) => {
