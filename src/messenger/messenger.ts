@@ -1,16 +1,23 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { GET_STARTED, Menu, PAGE_ACCESS_TOKEN } from "../const";
-import { MessageResponse } from "./messenger.type";
+import { ButtonFrom } from "../ultility/ultility";
+
+type MessageResponse = { text: string } | { attachment: any };
 
 interface CallRequestInterface extends AxiosRequestConfig {
   path: string;
+}
+
+interface MenuTemplate {
+  title: string;
+  payload: string;
 }
 
 export class Messenger {
   private BASE_URL = "https://graph.facebook.com/v2.6/me";
   private TOKEN = PAGE_ACCESS_TOKEN;
 
-  ListFunctions = [
+  ListFunctions: MenuTemplate[] = [
     {
       title: "Get Newest News",
       payload: Menu.NEWS,
@@ -18,6 +25,10 @@ export class Messenger {
     {
       title: "Daily Horoscrope",
       payload: Menu.HOROSCOPE,
+    },
+    {
+      title: "Random Meme",
+      payload: Menu.MEME,
     },
   ];
 
@@ -47,21 +58,17 @@ export class Messenger {
   };
 
   setSelectButton = (senderPsid: string) => {
-    const data = {
-      type: "template",
-      payload: {
-        template_type: "button",
-        text: "How can I help you ?",
-        buttons: this.ListFunctions.map((item) => ({
-          ...item,
-          type: "postback",
-        })),
-      },
-    };
+    const data = ButtonFrom({
+      text: "How can I help you ?",
+      buttons: this.ListFunctions.map((item) => ({
+        ...item,
+        type: "postback",
+      })),
+    });
     this.callSendAPI(senderPsid, { attachment: data });
   };
 
-  setPermistentMenu = (senderPsid: string) => {
+  setPersistentMenu = (senderPsid: string) => {
     const data = {
       psid: senderPsid,
       persistent_menu: [

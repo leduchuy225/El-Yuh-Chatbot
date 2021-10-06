@@ -22,7 +22,7 @@ router.post("/webhook", (req, res) => {
       if (payload) {
         switch (payload) {
           case GET_STARTED:
-            messenger.setPermistentMenu(senderPsid);
+            messenger.setPersistentMenu(senderPsid);
             messenger.setSelectButton(senderPsid);
             return;
           case Menu.NEWS:
@@ -30,6 +30,9 @@ router.post("/webhook", (req, res) => {
             return;
           case Menu.HOROSCOPE:
             messengerUltility.sendHoroscopeForToday(senderPsid);
+            return;
+          case Menu.MEME:
+            messengerUltility.sendRandomMeme(senderPsid);
             return;
         }
       } else {

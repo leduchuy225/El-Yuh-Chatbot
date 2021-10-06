@@ -2,6 +2,7 @@ import axios from "axios";
 import { load } from "cheerio";
 import dayjs from "dayjs";
 import { DATE_FORMAT } from "../const";
+import { NUMBER_OF_NEWS } from "./../const";
 
 interface ArticleData {
   id: string;
@@ -10,7 +11,7 @@ interface ArticleData {
   link: string;
 }
 
-export const crawlLastestNewsFromThanhNienVn = async (number: number) => {
+export const crawlLastestNewsFromThanhNienVn = async () => {
   const { data } = await axios.get(
     "https://thanhnien.vn/api/contents/get/latest",
     {
@@ -35,7 +36,7 @@ export const crawlLastestNewsFromThanhNienVn = async (number: number) => {
       articles.push(item);
     });
 
-    return articles.slice(0, number);
+    return articles.slice(0, NUMBER_OF_NEWS);
   } catch {
     return [];
   }
