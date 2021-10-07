@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Your birthday</title>
+  </head>
+  <body>
+    <script>
+      function submitBirthday() {
+        $.ajax({
+          method: "POST",
+          url: "/web-view/user",
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({
+            date: $("#birthday").val(),
+            psid: $("#psid").val(),
+          }),
+        }).done((msg) => console.log("Send OK"));
+      }
+    </script>
+    <script>
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "Messenger");
+
+      window.extAsyncInit = function () {
+        // SDK loaded, code to follow
+        MessengerExtensions.getSupportedFeatures(
+          function success(result) {
+            const features = result.supported_features;
+            if (features.indexOf("context") != -1) {
+              MessengerExtensions.getContext(
+                "1097223567476400",
+                function success(thread_context) {
+                  // success
+                  document.getElementById("psid").value = thread_context.psid;
+                },
+                function error(err) {
+                  console.log(err);
+                }
+              );
+            }
+          },
+          function error(err) {
+            console.log(err);
+          }
+        );
+
+        document
+          .getElementById("submitButton")
+          .addEventListener("click", () => {
+            document.getElementById("submitButton").onclick = submitBirthday();
+            MessengerExtensions.requestCloseBrowser(
+              function success() {
+                console.log("Webview closing");
+              },
+              function error(err) {
+                console.log(err);
+              }
+            );
+          });
+      };
+    </script>
+
+    <div>
+      <input type="hidden" name="psid" id="psid" />
+      <div>
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" name="birthday" />
+      </div>
+      <button id="submitButton">Submit</button>
+    </div>
+  </body>
+</html>

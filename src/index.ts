@@ -3,6 +3,7 @@ import express from "express";
 import { PORT } from "./const";
 import testRouter from "./test/test";
 import webHookRouter from "./web-hook";
+import webViewRouter from "./web-view";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.get("/", (_, res) => {
 
 app.use("/", webHookRouter);
 app.use("/test", testRouter);
+app.use("/web-view", webViewRouter);
 
 app.listen(PORT, () => {
   console.log("Current time:", dayjs().format());

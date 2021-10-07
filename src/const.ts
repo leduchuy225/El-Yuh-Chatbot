@@ -8,6 +8,8 @@ export const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 export const GET_STARTED = "1";
 export const DATE_FORMAT = "DD/MM/YYYY";
 
+export const DOMAIN_NAME = "https://el-yuh-chatbot.herokuapp.com";
+
 export const MEME_MIN = 1;
 export const MEME_MAX = 200;
 

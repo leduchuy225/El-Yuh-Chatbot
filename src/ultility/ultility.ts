@@ -2,6 +2,9 @@ interface ButtonTemplate {
   title: string;
   payload: string;
   type: string;
+  url?: string;
+  webview_height_ratio?: string;
+  messenger_extensions?: boolean;
 }
 
 interface ButtonFormTemplate {

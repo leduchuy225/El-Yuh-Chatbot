@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { GET_STARTED, Menu, VERIFY_TOKEN } from "./const";
+import { DOMAIN_NAME, GET_STARTED, Menu, VERIFY_TOKEN } from "./const";
 import { messenger } from "./messenger/messenger";
 import { messengerUltility } from "./messenger/messenger-ultility";
 
@@ -14,9 +14,10 @@ router.post("/webhook", (req, res) => {
     body.entry.forEach(async function (entry: any) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
-      console.log(entry);
-
       const webhookEvent = entry.messaging[0];
+
+      console.log(webhookEvent);
+
       const senderPsid = webhookEvent.sender.id;
       const payload = webhookEvent?.postback?.payload;
       if (payload) {
@@ -36,6 +37,27 @@ router.post("/webhook", (req, res) => {
             return;
         }
       } else {
+        if (webhookEvent?.message?.text === "testing") {
+          const response = {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text: "For testing purpose",
+              buttons: [
+                {
+                  type: "web_url",
+                  url: DOMAIN_NAME + "/web-view/user",
+                  title: "Test web-view",
+                  webview_height_ratio: "compact",
+                  messenger_extensions: true,
+                },
+              ],
+            },
+          };
+          messenger.callSendAPI(senderPsid, { attachment: response });
+          return;
+        }
+
         messenger.setSelectButton(senderPsid);
       }
     });
