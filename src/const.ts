@@ -23,4 +23,16 @@ export enum Menu {
 
 export enum Horoscope {
   GEMINI = "song-tu-3",
+  /* "Bạch Dương" = "bach-duong-1",
+  "Kim Ngưu" = "kim-nguu-2",
+  "Song Tử" = "song-tu-3",
+  "Cự Giải" = "cu-giai-4",
+  "Sư Tử" = "su-tu-5",
+  "Xử Nữ" = "xu-nu-6",
+  "Thiên Bình" = "thien-binh-7",
+  "Hổ Cáp" = "ho-cap-8",
+  "Nhân Mã" = "nhan-ma-9",
+  "Ma Kết" = "ma-ket-10",
+  "Bảo Bình" = "bao-binh-11",
+  "Song Ngư" = "song-ngu-12", */
 }

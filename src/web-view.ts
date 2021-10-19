@@ -1,15 +1,20 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import path from "path";
 
-const router = Router();
+class WebViewController {
+  public router;
 
-router.get("/user", (_, res) => {
-  res.sendFile(path.join(__dirname + "/../public/date-picker.html"));
-});
+  constructor() {
+    this.router = Router();
+  }
 
-router.post("/user", (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
-});
+  public getUsers = (_: Request, res: Response) => {
+    res.sendFile(path.join(__dirname + "/../public/user.html"));
+  };
 
-export default router;
+  public setRoutes = () => {
+    this.router.get("/user", this.getUsers);
+  };
+}
+
+export const webViewController = new WebViewController();

@@ -2,22 +2,40 @@ import dayjs from "dayjs";
 import express from "express";
 import { PORT } from "./const";
 import testRouter from "./test/test";
-import webHookRouter from "./web-hook";
-import webViewRouter from "./web-view";
+import { webHookController } from "./web-hook";
+import { webViewController } from "./web-view";
 
-const app = express();
+class Server {
+  private app;
 
-app.use(express.json());
+  constructor() {
+    this.app = express();
+    this.setConfiguration();
+    this.setRoutes();
+  }
 
-app.get("/", (_, res) => {
-  res.send("Welcome to my app");
-});
+  public setConfiguration = () => {
+    this.app.use(express.json());
+  };
 
-app.use("/", webHookRouter);
-app.use("/test", testRouter);
-app.use("/web-view", webViewRouter);
+  public setRoutes = () => {
+    this.app.get("/", (_, res) => {
+      res.send("Welcome to my app");
+    });
 
-app.listen(PORT, () => {
-  console.log("Current time:", dayjs().format());
-  console.log(`Listening on port ${PORT}`);
-});
+    this.app.use("/", webHookController.router);
+    this.app.use("/web-view", webViewController.router);
+
+    this.app.use("/test", testRouter);
+  };
+
+  public start = () => {
+    this.app.listen(PORT, () => {
+      console.log("Current time:", dayjs().format());
+      console.log(`Listening on port ${PORT}`);
+    });
+  };
+}
+
+const server = new Server();
+server.start();
