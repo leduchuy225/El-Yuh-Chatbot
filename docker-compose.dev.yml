@@ -22,7 +22,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
       GADMIN_LISTEN_PORT: 80
     ports:
-      - "8080:80"
+      - "8000:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 

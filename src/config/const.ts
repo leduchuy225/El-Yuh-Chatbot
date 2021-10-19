@@ -5,6 +5,7 @@ config();
 export const PORT = process.env.PORT || 8080;
 export const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 export const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
 export const GET_STARTED = "1";
 export const DATE_FORMAT = "DD/MM/YYYY";
 
@@ -35,4 +36,9 @@ export enum Horoscope {
   "Ma Kết" = "ma-ket-10",
   "Bảo Bình" = "bao-binh-11",
   "Song Ngư" = "song-ngu-12", */
+}
+
+export enum Stage {
+  DEVELOPMENT = "DEVELOPMENT",
+  PRODUCTION = "PRODUCTION",
 }

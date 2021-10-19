@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { GET_STARTED, Menu, PAGE_ACCESS_TOKEN } from "../const";
+import { GET_STARTED, Menu, PAGE_ACCESS_TOKEN } from "../config/const";
 import { ButtonFrom } from "../ultility/ultility";
 
 type MessageResponse = { text: string } | { attachment: any };

@@ -1,4 +1,4 @@
-import { Horoscope } from "../const";
+import { Horoscope } from "../config/const";
 import {
   crawlHoroscopeTodayFromLichNgayTotVn,
   createDailyHoroScropeForm,

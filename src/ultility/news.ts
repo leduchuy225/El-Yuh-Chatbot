@@ -1,8 +1,8 @@
 import axios from "axios";
 import { load } from "cheerio";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "../const";
-import { NUMBER_OF_NEWS } from "./../const";
+import { DATE_FORMAT } from "../config/const";
+import { NUMBER_OF_NEWS } from "./../config/const";
 
 interface ArticleData {
   id: string;

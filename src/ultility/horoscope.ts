@@ -1,6 +1,6 @@
 import axios from "axios";
 import { load } from "cheerio";
-import { Horoscope } from "./../const";
+import { Horoscope } from "./../config/const";
 import { removeSpecialCharacters } from "./ultility";
 
 interface PredictionItem {
