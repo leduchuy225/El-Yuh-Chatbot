@@ -1,7 +1,7 @@
 import { WebHookService } from "./../service/webhook.service";
 import { Request, Response, Router } from "express";
 import { VERIFY_TOKEN } from "../config/const";
-import { messenger } from "../messenger/messenger";
+import { messenger } from "../service/messenger.service";
 
 export class WebHookController {
   public router;
@@ -34,12 +34,7 @@ export class WebHookController {
           return;
         }
 
-        if (webhookEvent?.message?.text === "testing") {
-          this.webHookService.test(senderPsid);
-          return;
-        }
-
-        messenger.setSelectButton(senderPsid);
+        messenger.sendSelectButton(senderPsid);
       });
 
       // Returns a '200 OK' response to all requests

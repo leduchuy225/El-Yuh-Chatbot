@@ -20,6 +20,7 @@ export enum Menu {
   NEWS = "NEWS",
   HOROSCOPE = "HOROSCOPE",
   MEME = "MEME",
+  USER_SETTING = "USER_SETTING",
 }
 
 export enum Horoscope {
